@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.io.IOError;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +39,7 @@ public class NoticeService {
     @Transactional
     public ResponseEntity findAllNotice(){
 
-       return  response(Collections.singletonList(noticeRepository.findAll()));
+       return  response(Collections.singletonList(noticeRepository.findAllByOrderByModifiedAtDesc()));
     }
     //게시물 등록
     public ResponseEntity noticeSave(NoticeRequestDto requestDto){
