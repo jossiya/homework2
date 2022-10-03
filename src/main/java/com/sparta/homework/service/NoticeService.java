@@ -39,7 +39,7 @@ public class NoticeService {
     @Transactional
     public ResponseEntity findAllNotice(){
 
-       return  response(Collections.singletonList(noticeRepository.findAllByOrderByModifiedAtDesc()));
+       return  response(Collections.singletonList(noticeRepository.findAllByOrderByCreatedAtDesc()));
     }
     //게시물 등록
     public ResponseEntity noticeSave(NoticeRequestDto requestDto){
