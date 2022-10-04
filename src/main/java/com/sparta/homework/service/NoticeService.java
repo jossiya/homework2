@@ -42,11 +42,13 @@ public class NoticeService {
        return  response(Collections.singletonList(noticeRepository.findAllByOrderByCreatedAtDesc()));
     }
     //게시물 등록
+    @Transactional
     public ResponseEntity noticeSave(NoticeRequestDto requestDto){
         Notice notice=new Notice(requestDto);
         return response(Collections.singletonList(noticeRepository.save(notice)));
     }
     //게시물 삭제
+    @Transactional
     public ResponseEntity noticeDelete(Long id){
         Notice notice = noticeRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException

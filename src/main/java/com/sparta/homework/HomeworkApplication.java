@@ -21,5 +21,4 @@ public class HomeworkApplication {
 			noticeRepository.save(new Notice("안녕하세요", "조정민" , "스프링 어려워","1234" ));
 		};
 	}
-
 }

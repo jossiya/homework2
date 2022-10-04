@@ -1,5 +1,6 @@
 package com.sparta.homework.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.homework.dto.NoticeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class Notice extends Timestamped{
 
     @Column(nullable = false)
     private String content;
-
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
