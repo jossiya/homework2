@@ -5,9 +5,15 @@ import com.sparta.homework.entity.Notice;
 import com.sparta.homework.entity.ResultResponse;
 import com.sparta.homework.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,7 +27,8 @@ import java.util.List;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
     private ResultResponse resultResponse;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     public  ResponseEntity response(List<Object> data){
 
         resultResponse=ResultResponse.builder()
@@ -67,7 +74,7 @@ public class NoticeService {
         return response(Collections.singletonList(HttpStatus.OK.is2xxSuccessful()));
     }
     //게시물 수정
-    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE, reason ="존재하지 않는 아이디입니다." )
+//    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE, reason ="존재하지 않는 아이디입니다." )
     @Transactional
     public ResponseEntity update(Long id, NoticeRequestDto requestDto) {
         Notice notice = noticeRepository.findById(id).orElseThrow(
@@ -86,14 +93,27 @@ public class NoticeService {
                 () -> new ResponseStatusException
                         (HttpStatus.NOT_FOUND, "존재하지 않는 아이디입니다.")
         );
-
-        if(requestDto.getPassword().equals(notice.getPassword())){
-
-
+        String encodedPassword = passwordEncoder.encode(notice.getPassword());
+        String clientencodedPassword=passwordEncoder.encode(requestDto.getPassword());
+        if(clientencodedPassword.equals(encodedPassword)){
             return response(Collections.singletonList(HttpStatus.OK.is2xxSuccessful()));
         }else {
 
-            return response(Collections.singletonList(HttpStatus.OK.is2xxSuccessful()));
+            return response(Collections.singletonList(false));
         }
     }
+    @Transactional
+    public Page<Notice> noticeList(Pageable pageable){
+        return noticeRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public  Object category(String category){
+        return noticeRepository.findAllByTitleContains(category);
+    }
+//    @Transactional
+//    public Notice categoryput(){
+//        return noticeRepository.save()
+//    }
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class Notice extends Timestamped{
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
 
@@ -30,12 +30,16 @@ public class Notice extends Timestamped{
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
-    public Notice(String title, String writer,String content, String password){
+
+    public Notice(String title, String writer,String content, Category category,String password){
         this.title=title;
         this.writer=writer;
         this.content=content;
         this.password=password;
+        this.category=category;
 
 
     }
@@ -44,6 +48,7 @@ public class Notice extends Timestamped{
         this.writer = requestDto.getWriter();
         this.content = requestDto.getContent();
         this.password = requestDto.getPassword();
+        this.category=requestDto.getCategory();
         setCreatedAt(getCreatedAt());
         setModifiedAt(getModifiedAt());
 

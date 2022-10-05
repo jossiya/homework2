@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     List<Object> findAllByOrderByCreatedAtDesc();
+    List<Object> findAllByTitleContaining(String title);
+    List<Notice> findAllByTitleContains(String title);
+    List<Notice> findByTitleIsContaining(String title);
 }
 

@@ -1,15 +1,21 @@
 package com.sparta.homework.controller;
 
 import com.sparta.homework.dto.NoticeRequestDto;
+import com.sparta.homework.entity.Category;
+import com.sparta.homework.entity.Notice;
 import com.sparta.homework.repository.NoticeRepository;
 import com.sparta.homework.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,6 +39,7 @@ public class NoticeController {
     public ResponseEntity creatNotice(@RequestBody NoticeRequestDto requestDto){
 //        Notice notice=new Notice(requestDto);
 //        return noticeRepository.save(notice);
+        String ennus= String.valueOf(Category.findById(requestDto.getCategory().ordinal()));
         return noticeService.noticeSave(requestDto);
     }
     //게시글 수정
@@ -57,5 +64,21 @@ public class NoticeController {
     @PostMapping("/api/notices/{id:[0-9]*$}")
     public ResponseEntity confirmPasswerd(@PathVariable Long id, @RequestBody NoticeRequestDto requestDto){
         return noticeService.compare(id,requestDto);
+    }
+    @GetMapping("/api/paging")
+    public Page<Notice> paging(@PageableDefault(page =0, size = 10 ,sort ="id",direction = Sort.Direction.DESC) Pageable pageable){
+       return noticeService.noticeList(pageable);
+    }
+    @GetMapping("/api/category/{category}")
+    public Object category(@PathVariable String category){
+        return noticeService.category(category);
+    }
+    @PostMapping("/api/category/{num}")
+    public boolean categorySave(@PathVariable int num){
+//        String ennus = Category.VIDEO.getKey(num);
+
+
+        return false;
+//        return noticeService.save(num, Category entity);
     }
 }
