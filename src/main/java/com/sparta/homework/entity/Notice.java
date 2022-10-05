@@ -2,19 +2,19 @@ package com.sparta.homework.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.homework.dto.NoticeRequestDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Builder
 @NoArgsConstructor // 기본생성자를 만듭니다.
+@AllArgsConstructor
+@Table
 @Getter
 @Entity
-
 public class Notice extends Timestamped{
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 

@@ -18,7 +18,9 @@ public class HomeworkApplication {
 	@Bean
 	public CommandLineRunner demo(NoticeRepository noticeRepository) {
 		return (args) -> {
-			noticeRepository.save(new Notice("안녕하세요", "조정민" , "스프링 어려워","1234" ));
+//			noticeRepository.save(new Notice("안녕하세요", "조정민" , "스프링 어려워","1234" ));
+
+
 		};
 	}
 }

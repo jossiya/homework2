@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,11 +34,21 @@ public class NoticeService {
         return new ResponseEntity(resultResponse ,resultResponse.getHttpStatus());
     }
 
-    //모든 게시물
+    //모든 게시물,String category
     @Transactional
-    public ResponseEntity findAllNotice(){
-
-       return  response(Collections.singletonList(noticeRepository.findAllByOrderByCreatedAtDesc()));
+    public ResponseEntity findAllNotice(Integer display){
+        int i;
+        ArrayList<Object> search= new ArrayList<>();
+        List<Object>list=noticeRepository.findAllByOrderByCreatedAtDesc();
+        if (display!=0) {
+            for (i = 0; i < list.size() - 1; i++) {
+                if (i == display) break;
+                search.add(list.get(i));
+            }
+            return response(search);
+        } else {
+            return response(noticeRepository.findAllByOrderByCreatedAtDesc());
+        }
     }
     //게시물 등록
     @Transactional
